@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import DashboardView from './views/DashboardView.vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <DashboardView />
+  <RouterView />
 </template>
 
-<style scoped></style>
+<style>
+header {
+  font-size: x-small;
+  border-bottom: 1px solid #ccc;
+}
+</style>

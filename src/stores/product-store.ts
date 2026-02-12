@@ -2,17 +2,19 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Product } from '../types/product'
 import ProductApi from '../services/product-api'
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../lib/constants'
 
 export const useProductStore = defineStore('product', () => {
   const products = ref<Product[]>([])
+  const productDetail = ref<Product | null>(null)
   const categories = ref<string[]>([])
   const loadingProducts = ref<boolean>(false)
   const loadingCategories = ref<boolean>(false)
 
   const search = ref<string>('')
   const selectedCategory = ref<string>('all')
-  const page = ref<number>(1)
-  const limit = ref<number>(10)
+  const page = ref<number>(DEFAULT_PAGE)
+  const limit = ref<number>(DEFAULT_LIMIT)
 
   const filteredProducts = computed(() => {
     let result = products.value
@@ -23,7 +25,7 @@ export const useProductStore = defineStore('product', () => {
       )
     }
 
-    if (selectedCategory.value) {
+    if (selectedCategory.value && selectedCategory.value !== 'all') {
       result = result.filter((product) => product.category === selectedCategory.value)
     }
 
@@ -55,6 +57,21 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
+  const fetchProduct = async (productId: number) => {
+    try {
+      loadingProducts.value = true
+      const data = await ProductApi.getProduct(productId)
+
+      if (data) {
+        productDetail.value = data
+      }
+    } catch (error) {
+      console.error('Error fetching product', error)
+    } finally {
+      loadingProducts.value = false
+    }
+  }
+
   const fetchCategories = async () => {
     try {
       loadingCategories.value = true
@@ -72,6 +89,7 @@ export const useProductStore = defineStore('product', () => {
 
   return {
     products,
+    productDetail,
     categories,
     loadingProducts,
     loadingCategories,
@@ -83,6 +101,7 @@ export const useProductStore = defineStore('product', () => {
     paginatedProducts,
     totalPages,
     fetchProducts,
+    fetchProduct,
     fetchCategories,
   }
 })

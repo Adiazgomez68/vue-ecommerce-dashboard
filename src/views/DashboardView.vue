@@ -1,11 +1,20 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useProductStore } from '../stores/product-store'
+import ProductList from '../components/ProductList.vue'
+import ProductPagination from '../components/ProductPagination.vue'
+import WrapperContainer from '../components/WrapperContainer.vue'
 
 const store = useProductStore()
+
+onMounted(() => {
+  store.fetchProducts()
+  store.fetchCategories()
+})
 </script>
 
 <template>
-  <div class="dashboard">
+  <WrapperContainer>
     <header class="header">
       <h1>Productos</h1>
     </header>
@@ -14,27 +23,30 @@ const store = useProductStore()
       <div class="filters">
         <input type="text" v-model="store.search" placeholder="Buscar producto" />
 
-        <select name="categories" v-model="store.selectedCategory">
+        <select v-model="store.selectedCategory">
           <option value="all">Todas las categorías</option>
           <option v-for="category in store.categories" :key="category" :value="category">
             {{ category }}
           </option>
         </select>
       </div>
+
+      <div class="product-list">
+        <ProductList :products="store.paginatedProducts" :loading="store.loadingProducts" />
+      </div>
+
+      <div class="pagination" v-if="store.totalPages > 1">
+        <ProductPagination />
+      </div>
     </div>
-  </div>
+  </WrapperContainer>
 </template>
 
 <style scoped>
-.dashboard {
-  padding: 2rem;
-  font-family: Arial, Helvetica, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.header {
-  font-size: x-small;
-  border-bottom: 1px solid #ccc;
+.filters {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 </style>
