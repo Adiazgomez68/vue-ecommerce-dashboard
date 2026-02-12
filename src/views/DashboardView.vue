@@ -26,9 +26,14 @@ onMounted(() => {
 
     <div v-else-if="store.products.length > 0" class="content">
       <div class="filters">
-        <input type="text" v-model="store.search" placeholder="Buscar producto" />
+        <input
+          type="text"
+          v-model="store.search"
+          @input="store.page = 1"
+          placeholder="Buscar producto..."
+        />
 
-        <select v-model="store.selectedCategory">
+        <select v-model="store.selectedCategory" @change="store.page = 1">
           <option value="all">Todas las categorías</option>
           <option v-for="category in store.categories" :key="category" :value="category">
             {{ category }}
@@ -36,17 +41,23 @@ onMounted(() => {
         </select>
       </div>
 
-      <div class="product-list">
-        <ProductList :products="store.paginatedProducts" />
-      </div>
+      <template v-if="store.paginatedProducts.length > 0">
+        <div class="product-list">
+          <ProductList :products="store.paginatedProducts" />
+        </div>
 
-      <div class="pagination" v-if="store.totalPages > 1">
-        <ProductPagination />
-      </div>
+        <div class="pagination" v-if="store.totalPages > 1">
+          <ProductPagination />
+        </div>
+      </template>
+
+      <template v-else>
+        <p>No se encontraron productos relacionados.</p>
+      </template>
     </div>
 
     <div v-else class="content">
-      <p>No se encontraron productos</p>
+      <p>No se encontraron productos.</p>
     </div>
   </WrapperContainer>
 </template>
