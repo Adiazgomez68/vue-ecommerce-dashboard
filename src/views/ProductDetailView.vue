@@ -3,7 +3,7 @@ import WrapperContainer from '../components/common/WrapperContainer.vue'
 import { useProductStore } from '../stores/product-store'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
-import ProductDetail from '../components/ProductDetail.vue'
+import ProductDetail from '../components/product/ProductDetail.vue'
 import LoaderSpinner from '../components/common/LoaderSpinner.vue'
 
 const store = useProductStore()

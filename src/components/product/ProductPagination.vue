@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useProductStore } from '../stores/product-store'
+import { useProductStore } from '../../stores/product-store'
+import ArrowLeft from '../common/icons/ArrowLeft.vue'
+import ArrowRight from '../common/icons/ArrowRight.vue'
 
 const store = useProductStore()
 
@@ -23,7 +25,7 @@ const goToPage = (page: number) => {
 <template>
   <div class="pagination">
     <button class="pagination-btn" @click="previousPage" :disabled="store.page === 1">
-      Anterior
+      <ArrowLeft />
     </button>
 
     <div class="pagination-numbers">
@@ -39,7 +41,7 @@ const goToPage = (page: number) => {
     </div>
 
     <button class="pagination-btn" @click="nextPage" :disabled="store.page === store.totalPages">
-      Siguiente
+      <ArrowRight />
     </button>
   </div>
 </template>
@@ -47,26 +49,27 @@ const goToPage = (page: number) => {
 <style scoped>
 .pagination {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
+  gap: 0.3rem;
 }
 
 .pagination-btn {
-  padding: 0.5rem 1rem;
-  border: 2px solid #4f46e5;
+  padding: 0.5rem 0.5rem;
   background: white;
-  color: #4f46e5;
+  color: #616162;
+  border: 0;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background: #4f46e5;
-  color: white;
+  background: #ececec;
+  color: black;
 }
 
 .pagination-btn:disabled {
@@ -80,9 +83,9 @@ const goToPage = (page: number) => {
 }
 
 .pagination-number {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #e0e0e0;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e0e0e0;
   background: white;
   border-radius: 6px;
   cursor: pointer;

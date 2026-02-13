@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import DashboardView from '../views/DashboardView.vue'
+import DashboardLayout from '../layouts/DashboardLayout.vue'
+import ProductView from '../views/ProductView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
 
 const router = createRouter({
@@ -7,13 +8,20 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: DashboardView,
-    },
-    {
-      path: '/product/:id',
-      name: 'product-detail',
-      component: ProductDetailView,
+      component: DashboardLayout,
+      redirect: '/products',
+      children: [
+        {
+          path: 'products',
+          name: 'products',
+          component: ProductView,
+        },
+        {
+          path: 'products/:id',
+          name: 'product-detail',
+          component: ProductDetailView,
+        },
+      ],
     },
   ],
 })
